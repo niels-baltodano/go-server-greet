@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker CI Go Server GRPC
 env:
   DOCKER-TAG: $(date +%s)
 
@@ -20,8 +20,12 @@ jobs:
       run: |
         echo "DOCKER-TAG=$(date +%s)" >> $GITHUB_ENV
     - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USER }}/go-server-greet:${{env.DOCKER-TAG}}
+    
+    #- name: Build the Docker image
+     # run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USER }}/go-server-greet:${{env.DOCKER-TAG}}
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+      
     - name: Docker Login
       uses: docker/login-action@v1.10.0
       with:
