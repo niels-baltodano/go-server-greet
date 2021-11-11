@@ -1,4 +1,6 @@
 name: Docker Image CI
+env:
+  DOCKER-TAG: $(date +%s)
 
 on:
   push:
@@ -15,9 +17,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      env:
-        DOCKER-TAG: $(date +%s)
-      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USER }}/go-server-greet:${DOCKER-TAG}
+      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USER }}/go-server-greet:${{env.DOCKER-TAG}}
     - name: Docker Login
       uses: docker/login-action@v1.10.0
       with:
@@ -35,4 +35,4 @@ jobs:
         context: ./
         file: ./Dockerfile
         push: true
-        tags: ${{ secrets.DOCKER_USER }}/go-server-greet:${DOCKER-TAG}
+        tags: ${{ secrets.DOCKER_USER }}/go-server-greet:${{env.DOCKER-TAG}}
